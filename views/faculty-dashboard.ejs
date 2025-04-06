@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Faculty Dashboard</title>
+    <style>
+        body {
+    font-family: 'Nunito', sans-serif;
+    margin: 20px;
+    background: linear-gradient(135deg, #ff9800, #2979ff); /* Orange to Blue gradient */
+    color: #fff;
+}
+
+h1, h2 {
+    color: #ffd740; /* Light gold for headings */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    margin-top: 30px;
+}
+
+form {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="file"],
+input[type="url"],
+input[type="text"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #ffc107; /* Amber border */
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+input[type="file"]:focus,
+input[type="url"]:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: #ffeb3b; /* Light amber focus */
+    box-shadow: 0 0 8px rgba(255, 235, 59, 0.5);
+}
+
+button {
+    background-color: #4caf50; /* Green button */
+    color: #fff;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #43a047; /* Darker green hover */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #81d4fa; /* Light blue links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Logout link styling */
+a[href="/logout"] {
+    display: block;
+    width: 100px;
+    margin: 20px auto;
+    text-align: center;
+    background-color: #f44336; /* Red logout button */
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+}
+
+a[href="/logout"]:hover {
+    background-color: #d32f2f; /* Darker red hover */
+}
+    </style>
+</head>
+<body>
+    <h1>Welcome, <%= faculty.name %>!</h1>
+    <a href="/logout">Logout</a>
+
+    <h2>Upload Notes (PDF)</h2>
+    <form action="/faculty/upload-note" method="POST" enctype="multipart/form-data">
+        <input type="file" name="pdf" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Add YouTube Link</h2>
+    <form action="/faculty/add-youtube" method="POST">
+        <input type="url" name="url" placeholder="YouTube URL" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <h2>Add GitHub Link</h2>
+    <form action="/faculty/add-github" method="POST">
+        <input type="url" name="url" placeholder="GitHub URL" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <h2>Add Quiz</h2>
+    <form action="/faculty/add-quiz" method="POST">
+        <input type="text" name="question" placeholder="Quiz Question" required>
+        <input type="text" name="options" placeholder="Comma-separated options" required>
+        <input type="text" name="correctAnswer" placeholder="Correct Answer" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <h2>Uploaded Notes</h2>
+    <ul>
+        <% notes.forEach(note => { %>
+            <li><a href="<%= note.filePath %>" target="_blank"><%= note.fileName %></a></li>
+        <% }); %>
+    </ul>
+
+    <h2>Added YouTube Links</h2>
+    <ul>
+        <% youtubeLinks.forEach(link => { %>
+            <li><a href="<%= link.url %>" target="_blank"><%= link.url %></a></li>
+        <% }); %>
+    </ul>
+
+    <h2>Added GitHub Links</h2>
+    <ul>
+        <% githubLinks.forEach(link => { %>
+            <li><a href="<%= link.url %>" target="_blank"><%= link.url %></a></li>
+        <% }); %>
+    </ul>
+
+    <h2>Quiz Questions</h2>
+    <ul>
+        <% quizzes.forEach(quiz => { %>
+            <li>
+                <strong><%= quiz.question %></strong>
+                <form action="/faculty/delete-quiz/<%= quiz._id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this quiz?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+    <script src="/scripts.js"></script>
+
+</body>
+</html>

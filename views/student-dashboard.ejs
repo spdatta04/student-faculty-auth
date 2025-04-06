@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #ff9800, #2979ff); /* Orange to Blue gradient */
+            color: #fff;
+        }
+
+        h1, h2 {
+            color: #ffd740; /* Light gold for headings */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #81d4fa; /* Light blue links */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #b3e5fc; /* Lighter blue on hover */
+            text-decoration: underline;
+        }
+
+        .quiz-form {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .quiz-form input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        .quiz-form button {
+            background-color: #4caf50; /* Green button */
+            color: #fff;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .quiz-form button:hover {
+            background-color: #43a047; /* Darker green hover */
+        }
+
+        .feedback {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        a[href="/logout"] {
+            display: block;
+            width: 120px;
+            margin: 25px auto;
+            text-align: center;
+            background-color: #f44336; /* Red logout button */
+            padding: 12px 18px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        a[href="/logout"]:hover {
+            background-color: #d32f2f; /* Darker red hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome, Student!</h1>
+    <a href="/logout">Logout</a>
+
+    <h2>Available Notes</h2>
+    <ul>
+        <% notes.forEach(note => { %>
+            <li><a href="<%= note.filePath %>" target="_blank"><%= note.fileName %></a></li>
+        <% }); %>
+    </ul>
+
+    <h2>YouTube Links</h2>
+    <ul>
+        <% youtubeLinks.forEach(link => { %>
+            <li><a href="<%= link.url %>" target="_blank"><%= link.url %></a></li>
+        <% }); %>
+    </ul>
+
+    <h2>GitHub Links</h2>
+    <ul>
+        <% githubLinks.forEach(link => { %>
+            <li><a href="<%= link.url %>" target="_blank"><%= link.url %></a></li>
+        <% }); %>
+    </ul>
+
+    <h2>Quiz Questions</h2>
+    <ul>
+        <% quizzes.forEach(quiz => { %>
+            <li>
+                <strong><%= quiz.question %></strong>
+                <form class="quiz-form" data-correct="<%= quiz.correctAnswer %>">
+                    <% quiz.options.forEach(option => { %>
+                        <label>
+                            <input type="radio" name="answer" value="<%= option %>"> <%= option %>
+                        </label><br>
+                    <% }); %>
+                    <button type="submit">Submit</button>
+                    <span class="feedback"></span>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+
+    <script>
+        document.querySelectorAll('.quiz-form').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const selectedOption = this.querySelector('input[name="answer"]:checked');
+                const correctAnswer = this.getAttribute('data-correct');
+                const feedback = this.querySelector('.feedback');
+
+                if (selectedOption) {
+                    if (selectedOption.value === correctAnswer) {
+                        feedback.innerHTML = " ✅ Correct!";
+                        feedback.style.color = "green";
+                    } else {
+                        feedback.innerHTML = " ❌ Wrong! Correct answer: " + correctAnswer;
+                        feedback.style.color = "red";
+                    }
+                } else {
+                    feedback.innerHTML = "Please select an option!";
+                    feedback.style.color = "orange";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

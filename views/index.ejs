@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student & Faculty Authentication</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Student-Faculty Portal</h1>
+
+        <div class="auth-section">
+            <div class="card">
+                <h2>Student</h2>
+                <button onclick="redirectTo('/student-login')">Login</button>
+                <button onclick="redirectTo('/student-register')">Register</button>
+            </div>
+
+            <div class="card">
+                <h2>Faculty</h2>
+                <button onclick="redirectTo('/faculty-login')">Login</button>
+                <button onclick="redirectTo('/faculty-register')">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
